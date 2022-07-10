@@ -1,0 +1,20 @@
+@startuml
+autonumber
+
+Caller -> FlightsController: json request
+FlightsController -> "AirlineService: BusyFlights": request
+group parallel
+"AirlineService: BusyFlights" -> "Other Airline Services": parallel calls
+"Other Airline Services" -> "Request Mappers": mapping request
+"Other Airline Services" <- "Request Mappers": translated  requests
+"Other Airline Services" -> "External Airline Services": external calls
+"Other Airline Services" <- "External Airline Services": search results
+"Other Airline Services" -> "Response Mappers": mapping request
+"Other Airline Services" <- "Response Mappers": translated  response
+"Other Airline Services" -> "AirlineService: BusyFlights"
+end group
+"AirlineService: BusyFlights" -> "AirlineService: BusyFlights": aggregating and sorting
+FlightsController <- "AirlineService: BusyFlights": search results
+Caller <- FlightsController: json response
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+
+interface AirlineService
+class BusyFlightsService
+class ToughJetService
+class CrazyAirService
+
+AirlineService <|-- BusyFlightsService
+AirlineService <|-- ToughJetService
+AirlineService <|-- CrazyAirService
+
+interface ExternalService
+class ToughJetExternalService
+class CrazyAirExternalService
+
+ExternalService <|-- ToughJetExternalService
+ExternalService <|-- CrazyAirExternalService
+
+interface RequestMapper
+class ToughJetRequestMapper
+class CrazyAirRequestMapper
+
+RequestMapper <|-- ToughJetRequestMapper
+RequestMapper <|-- CrazyAirRequestMapper
+
+interface ResponseMapper
+class ToughJetResponseMapper
+class CrazyAirResponseMapper
+
+ResponseMapper <|-- ToughJetResponseMapper
+ResponseMapper <|-- CrazyAirResponseMapper
+
+@enduml
