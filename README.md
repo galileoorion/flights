@@ -110,8 +110,9 @@ The results are sorted by fare _from the lowest fare to the highest_
 1. Create request and response model
 2. Create a request mapper that implements the RequestMapper interface
 3. Create a response mapper that implements the ResponseMapper interface
-4. Create a supplier service by extending the SupplierService class
-5. Use the new supplier service class in BusyFlightsService:
+4. Create an external service that implements the ExternalService interface and calls the supplier's web service
+5. Create a supplier service by extending the SupplierService class
+6. Use the new supplier service class in BusyFlightsService:
 ```java
     @Override
     public List<BusyFlightsResponse> search(BusyFlightsRequest request) {
