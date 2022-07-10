@@ -4,14 +4,14 @@ autonumber
 Caller -> FlightsController: json request
 FlightsController -> "AirlineService: BusyFlights": request
 group parallel
-"AirlineService: BusyFlights" -> "Other Airline Services": parallel calls
-"Other Airline Services" -> "Request Mappers": mapping request
-"Other Airline Services" <- "Request Mappers": translated  requests
-"Other Airline Services" -> "External Airline Services": external calls
-"Other Airline Services" <- "External Airline Services": search results
-"Other Airline Services" -> "Response Mappers": mapping request
-"Other Airline Services" <- "Response Mappers": translated  response
-"Other Airline Services" -> "AirlineService: BusyFlights"
+"AirlineService: BusyFlights" -> "Supplier Services": parallel calls
+"Supplier Services" -> "Request Mappers": mapping request
+"Supplier Services" <- "Request Mappers": translated  requests
+"Supplier Services" -> "External Services": external calls
+"Supplier Services" <- "External Services": search results
+"Supplier Services" -> "Response Mappers": mapping request
+"Supplier Services" <- "Response Mappers": translated  response
+"Supplier Services" -> "AirlineService: BusyFlights": search results
 end group
 "AirlineService: BusyFlights" -> "AirlineService: BusyFlights": aggregating and sorting
 FlightsController <- "AirlineService: BusyFlights": search results

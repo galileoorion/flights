@@ -1,13 +1,18 @@
 @startuml
 
-interface AirlineService
+class FlightsController
 class BusyFlightsService
+FlightsController ..> BusyFlightsService: uses
+
+interface AirlineService
+class SupplierService
 class ToughJetService
 class CrazyAirService
 
 AirlineService <|-- BusyFlightsService
-AirlineService <|-- ToughJetService
-AirlineService <|-- CrazyAirService
+AirlineService <|-- SupplierService
+SupplierService <|-- ToughJetService
+SupplierService <|-- CrazyAirService
 
 interface ExternalService
 class ToughJetExternalService
@@ -29,5 +34,10 @@ class CrazyAirResponseMapper
 
 ResponseMapper <|-- ToughJetResponseMapper
 ResponseMapper <|-- CrazyAirResponseMapper
+
+
+SupplierService ..> RequestMapper: uses
+SupplierService ..> ExternalService: uses
+SupplierService ..> ResponseMapper: uses
 
 @enduml
