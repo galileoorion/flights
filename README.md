@@ -11,7 +11,7 @@ JDK 11 or later
 The two external endpoints are called in parallel. If more suppliers are added, they will be called in parallel too.
 
     if a call to a supplier fails
-        then results from other suppliers will be included in the BusyFlightRespnse
+        then results from other suppliers will be included in the BusyFlightResponse
         and the result from the failed supplier will be omitted 
         (no exception is throw, no error object is returned to the user)
         and the call will not be tried in the scope of the current request
@@ -104,6 +104,31 @@ The results are sorted by fare _from the lowest fare to the highest_
 | arrivalAirportName   | destinationAirportCode |                                                                                                                                                                                                                                                |
 | outboundDateTime     | departureDate          | format must be converted from ISO_INSTANT to ISO_DATE_TIME - assuming the time zone is UTC                                                                                                                                                     |
 | inboundDateTime      | arrivalDate            | format must be converted from ISO_INSTANT to ISO_DATE_TIME - assuming the time zone is UTC                                                                                                                                                     |
+
+## How to add a new supplier
+
+1. Create request and response model
+2. Create a request mapper that implements the RequestMapper interface
+3. Create a response mapper that implements the ResponseMapper interface
+4. Create a supplier service by extending the SupplierService class
+5. Use the new supplier service class in BusyFlightsService:
+```java
+    @Override
+    public List<BusyFlightsResponse> search(BusyFlightsRequest request) {
+        return Stream.of(
+                        CompletableFutureFlights.supplyAsyncThenHandle(() -> crazyAirService.search(request)),
+                        CompletableFutureFlights.supplyAsyncThenHandle(() -> toughJetService.search(request))
+                        // Add new service here
+                ).map(CompletableFuture::join)
+                .reduce(new ArrayList<>(), (a, b) -> {
+                    a.addAll(b);
+                    return a;
+                })
+                .stream()
+                .sorted(Comparator.comparing(BusyFlightsResponse::getFare))
+                .collect(Collectors.toList());
+    }
+```
 
 ## Sequence Diagram
 

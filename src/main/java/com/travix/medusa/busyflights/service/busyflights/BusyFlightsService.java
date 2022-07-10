@@ -26,6 +26,7 @@ public class BusyFlightsService implements AirlineService {
         this.toughJetService = toughJetService;
     }
 
+    @Override
     public List<BusyFlightsResponse> search(BusyFlightsRequest request) {
         return Stream.of(
                         CompletableFutureFlights.supplyAsyncThenHandle(() -> crazyAirService.search(request)),
